@@ -1,6 +1,10 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export const CreateCapsule = () => {
+  const navigate = useNavigate();
+
+// after successful POST
+if (res.ok) navigate("/");
   const [formData, setFormData] = useState({
     title: "",
     message: "",

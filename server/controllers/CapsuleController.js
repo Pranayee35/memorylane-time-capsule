@@ -27,3 +27,14 @@ export const getCapsules = async(req,res)=>{
     res.status(500).json({ message: "Server error" });
   }
 };
+export const getCapsuleById = async (req, res) => {
+  try {
+    const capsule = await Capsule.findById(req.params.id);
+    if (!capsule) {
+      return res.status(404).json({ message: "Capsule not found" });
+    }
+    res.json(capsule);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch capsule" });
+  }
+};
