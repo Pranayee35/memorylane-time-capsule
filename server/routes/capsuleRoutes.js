@@ -1,5 +1,6 @@
 import express from "express";
-import { createCapsule } from "../controllers/capsuleController.js";
+import { createCapsule,getCapsules } from "../controllers/capsuleController.js";
 const router = express.Router();
 router.post("/",createCapsule);
+router.get("/",getCapsules);
 export default router;

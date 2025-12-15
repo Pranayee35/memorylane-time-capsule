@@ -17,3 +17,13 @@ export const createCapsule = async(req,res)=>{
         res.status(500).json({message:"Server error"});
     }
 };
+export const getCapsules = async(req,res)=>{
+    try{
+        const capsules = await Capsule.find().sort({ createdAt: -1 });
+
+    res.status(200).json(capsules);
+  } catch (error) {
+    console.error("Get capsules error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

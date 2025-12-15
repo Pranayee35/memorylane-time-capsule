@@ -10,6 +10,7 @@ import capsuleRoutes from "./routes/capsuleRoutes.js";
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/api/upload", uploadRoutes);
 app.use("/api/capsules", capsuleRoutes);
 
