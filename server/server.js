@@ -1,11 +1,15 @@
+import uploadRoutes from "./routes/uploadroutes.js";
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import mongoose from "mongoose";
-dotenv.config();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use("/api/upload", uploadRoutes);
+
 mongoose
 .connect(process.env.MONGO_URI)
 .then(()=>console.log("mongodb connected"))
