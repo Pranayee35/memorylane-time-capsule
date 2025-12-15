@@ -1,4 +1,4 @@
-import { Capsule } from "../models/Capsule";
+import { Capsule } from "../models/Capsule.js";
 export const createCapsule = async(req,res)=>{
     try{
         const {
