@@ -7,7 +7,7 @@ export const App = ()=>{
     <Routes>
       <Route path="/" element={<Dashboard/>}/>
        <Route path="/create" element={<CreateCapsule/>}/>
-      <Route path="/capsule/:id" element={<CapsuleDetails/>}/> 
+      <Route path="/capsule/access/:token" element={<CapsuleDetails/>}/> 
     </Routes> 
   );
 };

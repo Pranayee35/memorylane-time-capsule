@@ -1,8 +1,29 @@
 import express from "express";
-import { createCapsule,getCapsules,getCapsuleById } from "../controllers/capsuleController.js";
+import { 
+    createCapsule,
+    getCapsules,
+    getCapsuleById,
+    getCapsuleByAccessToken,
+    checkAndUnlockCapsules,
+    unlockCapsule,
+    addComment,
+    addReaction
+} from "../controllers/capsuleController.js";
+import {protect} from "../middleware/authmiddleware.js";
 const router = express.Router();
-router.post("/",createCapsule);
-router.get("/",getCapsules);
 
-router.get("/:id", getCapsuleById);
+// Basic CRUD
+router.post("/", protect, createCapsule);
+router.get("/",protect, getCapsules);
+router.get("/access/:token",getCapsuleByAccessToken); // Access via unique token
+router.get("/:id", protect, getCapsuleById);
+
+// NEW: Unlock operations
+router.post("/check-unlock", checkAndUnlockCapsules);
+router.post("/:id/unlock", unlockCapsule);
+
+// NEW: Comments and Reactions
+router.post("/:id/comments", addComment);
+router.post("/:id/reactions", addReaction);
+
 export default router;
