@@ -6,7 +6,7 @@ export const createCapsule = async(req,res)=>{
         const {
             title,message,theme, unlockType,unlockDate,recipients,collaborators,media,createdBy,privacy,eventType
         } = req.body;
-        const recipientAccessToken = crypto.randomBytes(32).toString(hex); // Generate a unique access token for recipients
+        const recipientAccessToken = crypto.randomBytes(32).toString("hex"); // Generate a unique access token for recipients
         // Improved validation
         if(!title || !message || !theme || !unlockType || !recipients){
             return res.status(400).json({message:"Missing required fields: title, message, theme, unlockType, recipients, createdBy"});

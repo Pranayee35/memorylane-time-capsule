@@ -13,7 +13,7 @@ export const CapsuleDetails = () => {
   const [newComment, setNewComment] = useState("");
   const [commentError, setCommentError] = useState("");
   const [selectedReaction, setSelectedReaction] = useState(null);
-
+const isLoggedIn = !!localStorage.getItem("userEmail");
   // Emoji reactions available
   const reactionEmojis = ["❤️", "😂", "😍", "🔥", "👏", "🎉"];
 
@@ -218,7 +218,7 @@ export const CapsuleDetails = () => {
         )}
 
         {/* Interactions - Only if Unlocked */}
-        {capsule.unlocked && (
+        {capsule.unlocked && isLoggedIn && (
           <>
             {/* Reactions */}
             <section className="mb-8">
@@ -299,6 +299,33 @@ export const CapsuleDetails = () => {
             </section>
           </>
         )}
+        {capsule.unlocked && !isLoggedIn && (
+  <section className="bg-slate-800 rounded-lg p-6 mb-8 text-center">
+    <h2 className="text-xl font-bold text-cyan-400 mb-2">
+      💬 Want to interact with this memory?
+    </h2>
+
+    <p className="text-slate-400 mb-4">
+      Register or login to comment, react, and collaborate.
+    </p>
+
+    <div className="flex justify-center gap-4">
+      <Link
+        to="/login"
+        className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg"
+      >
+        Login
+      </Link>
+
+      <Link
+        to="/register"
+        className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg"
+      >
+        Register
+      </Link>
+    </div>
+  </section>
+)}
 
         {/* Recipients Info */}
         <section className="bg-slate-800 rounded-lg p-6">
