@@ -4,12 +4,12 @@ import crypto from "crypto";
 export const createCapsule = async(req,res)=>{
     try{
         const {
-            title,message,theme, unlockType,unlockDate,recipients,collaborators,media,createdBy,privacy,eventType
+            title,message,theme, unlockType,unlockDate,recipients,collaborators,media,privacy,eventType
         } = req.body;
         const recipientAccessToken = crypto.randomBytes(32).toString("hex"); // Generate a unique access token for recipients
         // Improved validation
         if(!title || !message || !theme || !unlockType || !recipients){
-            return res.status(400).json({message:"Missing required fields: title, message, theme, unlockType, recipients, createdBy"});
+            return res.status(400).json({message:"Missing required fields: title, message, theme, unlockType, recipients"});
         }
 
         if(unlockType === "date" && !unlockDate) {
@@ -143,10 +143,10 @@ export const unlockCapsule = async(req,res) => {
 export const addComment = async(req,res) => {
     try {
         const { id } = req.params;
-        const { createdBy, text } = req.body;
+        const { text } = req.body;
 
-        if(!createdBy || !text) {
-            return res.status(400).json({ message: "createdBy and text required" });
+        if(!text) {
+            return res.status(400).json({ message: "text required" });
         }
 
         const capsule = await Capsule.findById(id);
@@ -158,7 +158,10 @@ export const addComment = async(req,res) => {
             return res.status(403).json({ message: "Cannot comment - capsule not yet unlocked" });
         }
 
-        capsule.comments.push({ createdBy, text });
+        capsule.comments.push({
+            createdBy: req.user,
+            text 
+        });
         await capsule.save();
 
         res.json({ message: "Comment added", capsule });
@@ -173,10 +176,10 @@ export const addComment = async(req,res) => {
 export const addReaction = async(req,res) => {
     try {
         const { id } = req.params;
-        const { emoji, userId } = req.body;
+        const { emoji } = req.body;
 
-        if(!emoji || !userId) {
-            return res.status(400).json({ message: "emoji and userId required" });
+        if(!emoji) {
+            return res.status(400).json({ message: "emoji required" });
         }
 
         const capsule = await Capsule.findById(id);
@@ -193,13 +196,13 @@ export const addReaction = async(req,res) => {
         
         if(existingReaction) {
             // Check if user already reacted with this emoji
-            if(!existingReaction.users.includes(userId)) {
-                existingReaction.users.push(userId);
+            if(!existingReaction.users.includes(req.user)) {
+                existingReaction.users.push(req.user);
                 existingReaction.count += 1;
             }
         } else {
             // Create new reaction
-            capsule.reactions.push({ emoji, users: [userId], count: 1 });
+            capsule.reactions.push({ emoji, users: [req.user], count: 1 });
         }
 
         await capsule.save();

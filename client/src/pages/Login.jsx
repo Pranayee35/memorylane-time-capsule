@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,7 +8,8 @@ export const Login = () => {
   });
 
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const from = location.state?.from || "/";
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -42,7 +43,7 @@ export const Login = () => {
       // For now, also store the email
       localStorage.setItem("userEmail", formData.email);
 
-      navigate("/");
+      navigate(from);
 
     } catch (error) {
       console.error("Login error:", error);

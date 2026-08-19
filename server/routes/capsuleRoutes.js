@@ -23,7 +23,7 @@ router.post("/check-unlock", checkAndUnlockCapsules);
 router.post("/:id/unlock", unlockCapsule);
 
 // NEW: Comments and Reactions
-router.post("/:id/comments", addComment);
-router.post("/:id/reactions", addReaction);
+router.post("/:id/comments",protect, addComment);
+router.post("/:id/reactions", protect, addReaction);
 
 export default router;

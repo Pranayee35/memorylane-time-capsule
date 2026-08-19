@@ -1,6 +1,9 @@
 import { useState } from "react";
-
+import { useNavigate, useLocation } from "react-router-dom";
 export const Register = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/";
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -32,8 +35,11 @@ export const Register = () => {
       if (!res.ok) {
         throw new Error(data.message || "Registration failed");
       }
-
+      
       console.log("Registration successful:", data);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userEmail", formData.email);
+      navigate(from);
 
     } catch (error) {
       console.error("Registration error:", error);

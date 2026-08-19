@@ -49,15 +49,15 @@ const isLoggedIn = !!localStorage.getItem("userEmail");
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/capsules/${id}/comments`, {
+      const res = await fetch(`http://localhost:5000/api/capsules/${capsule._id}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
-          createdBy: localStorage.getItem("userEmail") || "Anonymous",
           text: newComment,
-        }),
+       }),
       });
 
       if (!res.ok) {
@@ -74,14 +74,14 @@ const isLoggedIn = !!localStorage.getItem("userEmail");
 
   const handleAddReaction = async (emoji) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/capsules/${id}/reactions`, {
+      const res = await fetch(`http://localhost:5000/api/capsules/${capsule._id}/reactions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
           emoji,
-          userId: localStorage.getItem("userEmail") || "Anonymous",
         }),
       });
 
@@ -312,6 +312,7 @@ const isLoggedIn = !!localStorage.getItem("userEmail");
     <div className="flex justify-center gap-4">
       <Link
         to="/login"
+        state={{from: `/capsule/access/${token}`}}
         className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg"
       >
         Login
@@ -319,6 +320,7 @@ const isLoggedIn = !!localStorage.getItem("userEmail");
 
       <Link
         to="/register"
+        state={{from: `/capsule/access/${token}`}}
         className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg"
       >
         Register
