@@ -1,5 +1,6 @@
 import { Capsule } from "../models/Capsule.js";
 import crypto from "crypto";
+import { User } from "../models/User.js";
 // ENHANCED: Create capsule with validation and privacy support
 export const createCapsule = async(req,res)=>{
     try{
@@ -228,8 +229,22 @@ export const getCapsuleByAccessToken = async(req,res)=>{
                 message:"This capsule is not unlocked yet.Please check back later"
             });
         }
-        res.status(200).json(capsule);
+        const creator = await User.findById(capsule.createdBy);
+        const capsuleData = capsule.toObject();
+        capsuleData.createdBy = creator?creator.fullName || creator.username:"Unknown user";
+        capsuleData.comments = await Promise.all(
+    capsuleData.comments.map(async (comment) => {
+        const user = await User.findById(comment.createdBy);
 
+        return {
+            ...comment,
+            createdBy: user
+                ? user.fullName || user.username
+                : "Unknown user"
+        };
+    })
+);
+        res.status(200).json(capsuleData);
     }catch(error){
         console.error("Access capsule error:",error);
         res.status(500).json({

@@ -64,8 +64,8 @@ const isLoggedIn = !!localStorage.getItem("userEmail");
         throw new Error("Failed to add comment");
       }
 
-      const updated = await res.json();
-      setCapsule(updated.capsule);
+      await res.json();
+      fetchCapsule();
       setNewComment("");
     } catch (err) {
       setCommentError(err.message);
@@ -89,8 +89,8 @@ const isLoggedIn = !!localStorage.getItem("userEmail");
         throw new Error("Failed to add reaction");
       }
 
-      const updated = await res.json();
-      setCapsule(updated.capsule);
+      await res.json();
+      fetchCapsule();
       setSelectedReaction(null);
     } catch (err) {
       console.error("Reaction error:", err);
