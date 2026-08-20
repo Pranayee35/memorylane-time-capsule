@@ -17,8 +17,11 @@ export const Dashboard = () => {
     try {
       setLoading(true);
       const queryParam = filter !== "all" ? `?filter=${filter}` : "";
-      const res = await fetch(`http://localhost:5000/api/capsules${queryParam}`);
-      
+      const res = await fetch(`http://localhost:5000/api/capsules${queryParam}`, {
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+     },
+   });
       if (!res.ok) {
         throw new Error("Failed to fetch capsules");
       }
