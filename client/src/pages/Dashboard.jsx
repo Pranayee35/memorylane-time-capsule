@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CapsuleCard } from "../components/CapsuleCard";
 import { Helmet } from "react-helmet-async";
 
 export const Dashboard = () => {
   const [capsules, setCapsules] = useState([]);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all"); // all, unlocked, locked
   const [error, setError] = useState("");
@@ -37,6 +38,11 @@ export const Dashboard = () => {
       setLoading(false);
     }
   };
+  const handleLogout = ()=>{
+    localStorage.removeItem("token");
+    localStorage.removeItem("userEmail");
+    navigate("/login");
+  }
 
   return (
     <main className="min-h-screen bg-slate-950 p-8">
@@ -56,12 +62,17 @@ export const Dashboard = () => {
           </h1>
           <p className="text-slate-400">Digital Time Capsule Platform</p>
         </div>
-        <Link
+        <div className="flex gap-10">
+          <Link
           to="/create"
           className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 px-6 py-3 rounded-lg font-semibold text-white transition shadow-lg"
         >
           + Create Capsule
         </Link>
+        <button onClick={handleLogout}className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 px-6 py-3 rounded-lg font-semibold text-white transition shadow-lg"
+         >Logout
+        </button>
+        </div>
       </header>
 
       {/* Filter Tabs */}
