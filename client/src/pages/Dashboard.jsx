@@ -7,12 +7,19 @@ export const Dashboard = () => {
   const [capsules, setCapsules] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+  !!localStorage.getItem("token")
+);
   const [filter, setFilter] = useState("all"); // all, unlocked, locked
   const [error, setError] = useState("");
 
   useEffect(() => {
+    if (isLoggedIn) {
     fetchCapsules();
-  }, [filter]);
+  } else {
+    setLoading(false);
+  }
+}, [filter, isLoggedIn]);
 
   const fetchCapsules = async () => {
     try {
@@ -42,6 +49,7 @@ export const Dashboard = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userEmail");
     navigate("/login");
+    setIsLoggedIn(false);
   }
 
   return (
@@ -62,7 +70,7 @@ export const Dashboard = () => {
           </h1>
           <p className="text-slate-400">Digital Time Capsule Platform</p>
         </div>
-        <div className="flex gap-10">
+        {/* <div className="flex gap-10">
           <Link
           to="/create"
           className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 px-6 py-3 rounded-lg font-semibold text-white transition shadow-lg"
@@ -72,7 +80,30 @@ export const Dashboard = () => {
         <button onClick={handleLogout}className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 px-6 py-3 rounded-lg font-semibold text-white transition shadow-lg"
          >Logout
         </button>
-        </div>
+        </div> */}
+        <div className="flex gap-10">
+        {isLoggedIn ? (
+  <>
+    <Link to="/create" className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 px-6 py-3 rounded-lg font-semibold text-white transition shadow-lg">
+      + Create Capsule
+    </Link>
+
+    <button onClick={handleLogout} className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 px-6 py-3 rounded-lg font-semibold text-white transition shadow-lg">
+      Logout
+    </button>
+  </>
+) : (
+  <>
+    <Link to="/login" className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 px-6 py-3 rounded-lg font-semibold text-white transition shadow-lg">
+      Login
+    </Link>
+
+    <Link to="/register" className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 px-6 py-3 rounded-lg font-semibold text-white transition shadow-lg">
+      Register
+    </Link>
+  </>
+)}
+</div>
       </header>
 
       {/* Filter Tabs */}

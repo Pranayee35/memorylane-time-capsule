@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 export const CreateCapsule = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    navigate("/login");
+  }
+}, [navigate]);
   const [loading, setLoading] = useState(false);
   const [uploadError, setUploadError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
