@@ -85,6 +85,12 @@ export const Register = () => {
           Register
         </button>
       </form>
+      <p>
+  Already have an account?{" "}
+  <button type="button" onClick={() => navigate("/login")}>
+    Login
+  </button>
+</p>
     </div>
   );
 };
